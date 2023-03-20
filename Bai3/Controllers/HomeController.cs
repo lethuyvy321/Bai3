@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
+using Bai3.ViewModels;
 
 namespace Bai3.Controllers
 {
@@ -21,8 +23,16 @@ namespace Bai3.Controllers
                 .Include(c => c.Lecture)
                 .Include(c => c.Category)
                 .Where(c => c.DateTime > DateTime.Now);
-            return View(upcomingCourses);
+
+            var viewModel = new CoursesViewModel
+            {
+                UpcomingCourses = upcomingCourses,
+                ShowAction = User.Identity.IsAuthenticated
+            };
+            return View(viewModel);
         }
+
+        
 
         public ActionResult About()
         {
