@@ -49,11 +49,22 @@
                 $(".js-toggle-attendance").click(function (e) {
                     var button = $(e.target);
                     $.post("/api/attendances", { courseId: button.attr("data-course-id") })
-                        .done(function () {
-                            button
-                                .removeClass("btn-default")
-                                .addClass("btn-info")
-                                .text("Going");
+                        .done(function (result) {
+                            if (result == "cancel") {
+                                alert("Cancel register course sucessfully!")
+                                button
+                                    .removeClass("btn-info")
+                                    .addClass("btn-default")
+                                    .text("Going?");
+                            }
+                            else {
+                                alert("Register course sucessfully!")
+                                button
+                                    .removeClass("btn-default")
+                                    .addClass("btn-info")
+                                    .text("Going");
+                            }
+
                         })
                         .fail(function () {
                             alert("Something failed!");
@@ -61,9 +72,29 @@
                 });
                 $(".js-toggle-follow").click(function (e) {
                     var button = $(e.target);
+                    var followee = button.attr("data-user-id");
                     $.post("/api/followings", { followeeId: button.attr("data-user-id") })
-                        .done(function () {
-                            button.text("Following");
+                        .done(function (result) {
+                            if (result == "cancel") {
+                                $('.js-toggle-follow').each(function (i, obj) {
+                                    if ($(this).attr('data-user-id') == followee) {
+                                        $(this).removeClass("btn-success")
+                                            .addClass("btn-default")
+                                            .text("Follow");
+                                    }
+                                });
+                                alert("unFollow successfully")
+                            }
+                            else {
+                                $('.js-toggle-follow').each(function (i, obj) {
+                                    if ($(this).attr('data-user-id') == followee) {
+                                        $(this).removeClass("btn-default")
+                                            .addClass("btn-success")
+                                            .text("Following");
+                                    }
+                                });
+                                alert("Follow sucessfully")
+                            }
                         })
                         .fail(function () {
                             alert("Something failed");

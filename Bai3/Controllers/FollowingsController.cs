@@ -23,9 +23,17 @@ namespace Bai3.Controllers
         public IHttpActionResult Follow(FollowingDto followingDto)
         {
             var userId = User.Identity.GetUserId();
+            if(userId == followingDto.FolloweeId)
+            {
+                return BadRequest("Cannot following myself!");
+            }
+            Following follow = _dbContext.Followings
+                .FirstOrDefault(p => p.FollowerId == userId && p.FolloweeId == followingDto.FolloweeId);
             if (_dbContext.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == followingDto.FolloweeId))
             {
-                return BadRequest("Following already exists!!");
+                _dbContext.Followings.Remove(follow);
+                _dbContext.SaveChanges();
+                return Ok("cancel");
             }
             var following = new Following
             {

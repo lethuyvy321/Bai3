@@ -10,6 +10,7 @@ namespace Bai3.Models
     public class Course
     {       
         public int Id { get; set; }
+        public bool IsCanceled { get; set; }
 
         public ApplicationUser Lecture { get; set; }
         [Required] 

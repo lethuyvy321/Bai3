@@ -6,15 +6,8 @@
 <h2>Create</h2>
 @using (Html.BeginForm("Create", "Courses"))
 {
-    @*<div>
-            @Html.LabelFor(m=> m.Lecture)
-            @Html.TextBoxFor(m=> m.Lecture, new { @class = "form-control"})
-        </div>
-        <div>
-            @Html.LabelFor(m => m.LectureId)
-            @Html.TextBoxFor(m => m.LectureId, new { @class = "form-control"})
-        </div>*@
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(m=>m.Id)
     <div class="form-group">
         @Html.LabelFor(m => m.Place)
         @Html.TextBoxFor(m => m.Place, new { @class = "form-control" })

@@ -21,9 +21,13 @@ namespace Bai3.Controllers
         public IHttpActionResult Attend(AttendanceDto attendanceDto)
         {
             var userId = User.Identity.GetUserId();
+            Attendance attendant = _dbContext.Attendances
+                .SingleOrDefault(p => p.AttendeeId == userId && p.CourseId == attendanceDto.CourseId);
             if(_dbContext.Attendances.Any(a => a.AttendeeId == userId && a.CourseId == attendanceDto.CourseId))
             {
-                return BadRequest("The Attendance already exists");
+                _dbContext.Attendances.Remove(attendant);
+                _dbContext.SaveChanges();
+                return Ok("cancel");
             }
             var attendance = new Attendance
             {
